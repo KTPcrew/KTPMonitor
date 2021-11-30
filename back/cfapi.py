@@ -14,6 +14,6 @@ def authorized_request(method, params):
     hash_line = "ktpmon/" + partial_request + "#" + secret
     apiSig = hashlib.sha512(hash_line.encode()).hexdigest()
     final_request = pref + '/' + partial_request + "&apiSig=ktpmon" + apiSig
-    pprint.pprint(requests.get(final_request))
+    pprint.pprint(requests.get(final_request).json())
 
-authorized_request("contest.status", [("contestId", "344649")])
+authorized_request("contest.standings", [("contestId", "344649"), ("showUnofficial", "false")])
