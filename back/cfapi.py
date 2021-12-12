@@ -2,6 +2,7 @@ import requests
 import pprint
 import hashlib
 import time
+import json
 
 pref = "https://codeforces.com/api"
 key, secret = (line.strip() for line in open("secret/cf cred.txt", "r"))
@@ -14,6 +15,7 @@ def authorized_request(method, params):
     hash_line = "ktpmon/" + partial_request + "#" + secret
     apiSig = hashlib.sha512(hash_line.encode()).hexdigest()
     final_request = pref + '/' + partial_request + "&apiSig=ktpmon" + apiSig
-    pprint.pprint(requests.get(final_request).json())
-asdfasdf
-authorized_request("contest.standings", [("contestId", "344649"), ("showUnofficial", "false")])
+    try:
+        return requests.get(final_request).json()
+    except:
+        return None
