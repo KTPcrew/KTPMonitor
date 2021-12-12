@@ -12,6 +12,8 @@ def get_standings(data):
     standings = []
     for team in data['rows']:
         participant = [team['party']['members'][0]['handle']]
+        if team['party']['participantType'] == 'PRACTICE':
+            participant[0] = '*' + participant[0]
         participant.append(str(int(team['points'])))
         for problem in team['problemResults']:
             result = ""
