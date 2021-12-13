@@ -35,3 +35,4 @@ def update_contests():
         f.write(get_header(data))
         f.write(get_standings(data))
         f.close()
+        print(repr(data))
