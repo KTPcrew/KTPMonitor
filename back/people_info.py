@@ -16,6 +16,7 @@ def update_people(div):
     columns = [2, 8, 4, 6, 7, 5]
     data = gsapi.get_data("Анкета для школьников (Ответы)", 0, columns)
     info = []
+    info.append("Имя,,Ник,,Возраст,,Школа,,Класс,,Город")
     for i in range(len(data[0])):
         if data[0][i].strip() not in names:
             continue
