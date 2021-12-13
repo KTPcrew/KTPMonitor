@@ -3,9 +3,15 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name('secret/gs cred.json', scope)
-client = gspread.authorize(creds)
+client = None
 
-sheet = client.open("Анкета для школьников (Ответы)").sheet1
+def authorize():
+    global client, sheet
+    client = gspread.authorize(creds)
 
-if __name__ == "__main__":
-    print(sheet.get_all_records())
+def get_data(name, page, columns):
+    sheet = client.open(name).get_worksheet(page)
+    res = []
+    for col in columns:
+        res.append(sheet.col_values(col))
+    return res

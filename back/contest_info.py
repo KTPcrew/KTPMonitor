@@ -25,14 +25,13 @@ def get_standings(data):
         standings.append(",,".join(participant))
     return "\n".join(standings)
 
-def update_contests():
-    for line in open("../data/contests/contests.txt"):
+def update_contests(div):
+    for line in open(f"../data/{div}/contests/contests.txt"):
         req = cfapi.authorized_request("contest.standings", [("contestId", line.strip()), ("showUnofficial", "true")])
         if req == None or req['status'] != "OK":
             continue
         data = req['result']
-        f = open(f"../data/contests/{line.strip()}", "w", encoding="utf-8")
+        f = open(f"../data/{div}/contests/{line.strip()}", "w", encoding="utf-8")
         f.write(get_header(data))
         f.write(get_standings(data))
         f.close()
-        print(repr(data))
