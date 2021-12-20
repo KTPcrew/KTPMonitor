@@ -22,9 +22,8 @@ def update_people(div):
             continue
         info.append([])
         for j in range(len(columns)):
-            info[-1].append(data[j][i])
+            info[-1].append(data[j][i].strip())
         info[-1] = ",,".join(info[-1])
-    # print(data)
     f = open(f"../data/{div}/people/students.txt", "w", encoding="utf8")
     f.write("\n".join(info))
     f.close()
@@ -41,4 +40,33 @@ def get_correlation(div):
 
 def update_stats(div):
     names = get_correlation(div)
-    
+    stats = {}
+    cnames = []
+    with open(f"../data/{div}/contests/descriptions.txt", "r", encoding="utf-8") as f:
+        descriptions = f.readlines()
+    for nick, name in names.items():
+        stats[nick] = [0] * (len(descriptions) - 1)
+    loc_cont_id = 0
+    for contest_desc in descriptions[1:]:
+        cname, cid = contest_desc.split(",,")[:2]
+        cnames.append(cname)
+        with open(f"../data/{div}/contests/{cid}", "r", encoding="utf-8") as f:
+            standings = f.readlines()
+        for line in standings[1:]:
+            data = line.split(",,")
+            nick = data[0]
+            if nick.startswith("*"):
+                nick = nick[1:]
+            if nick not in stats:
+                continue
+            stats[nick][loc_cont_id] += int(data[1])
+        loc_cont_id += 1
+    info = []
+    info.append(f"Имя,,Ник,,{',,'.join(cnames)}")
+    for nick, results in stats.items():
+        line_info = [names[nick], nick]
+        for i in results:
+            line_info.append(str(i))
+        info.append(",,".join(line_info))
+    with open(f"../data/{div}/people/stats.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(info))
