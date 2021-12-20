@@ -52,14 +52,19 @@ def update_stats(div):
         cnames.append(cname)
         with open(f"../data/{div}/contests/{cid}", "r", encoding="utf-8") as f:
             standings = f.readlines()
+        new_contest = ["Имя,," + standings[0]]
         for line in standings[1:]:
             data = line.split(",,")
             nick = data[0]
             if nick.startswith("*"):
                 nick = nick[1:]
             if nick not in stats:
+                new_contest.append("???,," + line)
                 continue
+            new_contest.append(names[nick] + ",," + line)
             stats[nick][loc_cont_id] += int(data[1])
+        with open(f"../data/{div}/contests/{cid}", "w", encoding="utf-8") as f:
+            f.write("".join(new_contest))
         loc_cont_id += 1
     info = []
     info.append(f"Имя,,Ник,,{',,'.join(cnames)}")
