@@ -10,7 +10,8 @@ if __name__ == "__main__":
     start = time.time()
     while True:
         for div in divs:
-            people_info.update_people(div)
             contest_info.update_contests(div)
+            people_info.update_people(div)
+            people_info.update_stats(div)
 
         time.sleep(delay - (time.time() - start) % delay)

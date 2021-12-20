@@ -28,4 +28,17 @@ def update_people(div):
     f = open(f"../data/{div}/people/students.txt", "w", encoding="utf8")
     f.write("\n".join(info))
     f.close()
+    return names
+
+def get_correlation(div):
+    with open(f'../data/{div}/people/students.txt', "r", encoding="utf8") as f:
+        lines = f.readlines()
+    names = {}
+    for line in lines[1:]:
+        name, nick = line.split(",,")[:2]
+        names[nick] = name
+    return names
+
+def update_stats(div):
+    names = get_correlation(div)
     

@@ -26,12 +26,21 @@ def get_standings(data):
     return "\n".join(standings)
 
 def update_contests(div):
-    for line in open(f"../data/{div}/contests/contests.txt"):
+    contest_info = []
+    contest_info.append("Название,,ID,,Создатель,,Длительность")
+    with open(f"../data/{div}/contests/contest_ids.txt", "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    for line in lines:
         req = cfapi.authorized_request("contest.standings", [("contestId", line.strip()), ("showUnofficial", "true")])
         if req == None or req['status'] != "OK":
             continue
         data = req['result']
-        f = open(f"../data/{div}/contests/{line.strip()}", "w", encoding="utf-8")
-        f.write(get_header(data))
-        f.write(get_standings(data))
-        f.close()
+        with open(f"../data/{div}/contests/{line.strip()}", "w", encoding="utf-8") as f:
+            f.write(get_header(data))
+            f.write(get_standings(data))
+        
+        data = data['contest']
+        contest_info.append(f"{data['name']},,{data['id']},,{data['preparedBy']},,{int(data['durationSeconds']) // 3600}")
+
+    with open(f"../data/{div}/contests/descriptions.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(contest_info))
