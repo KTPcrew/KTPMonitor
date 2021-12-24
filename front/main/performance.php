@@ -50,7 +50,7 @@
                     echo "</thead>";
                     for($i = 1; $i < count($students); $i++){
                         echo "<tr>";
-                        echo "<td>" . ($i+1) . "</td>\n";
+                        echo "<td>" . $i . "</td>\n";
                         echo "<td>" . $students[$i]['name'] . "</td>";
                         echo "<td><a href=\"https://codeforces.com/profile/" . $students[$i]['nik'] . "\">" . $students[$i]['nik'] . "</a></td>\n";
                         for($j = 2; $j < count($students[$i]); $j++){
