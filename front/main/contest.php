@@ -4,7 +4,7 @@
     $url = parse_url($actual_link);
     parse_str($url['query'],$params);
     // echo $params["div"]
-    $file = "../../server/data/" . $params['div'] . "/contests/" . $params['id'];
+    $file = "../../data/" . $params['div'] . "/contests/" . $params['id'];
     $file_content = file_get_contents($file);   // raw input
     $raw_students = explode("\n", $file_content); // parse to array of strings
 
